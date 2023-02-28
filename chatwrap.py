@@ -161,7 +161,7 @@ class Image:
         :raises openai.error.OpenAIError:
         """
         return openai.Image.create_variation(image=image,n=1,size=size)['data'][0]['url']
-def getEmbedding(self,prompt:str,engine:str="text-embedding-ada-002")->dict:
+def getEmbedding(prompt:str,engine:str="text-embedding-ada-002")->dict:
     """
     Gets embeddding using openai
     :param str prompt: The prompt to be embedded

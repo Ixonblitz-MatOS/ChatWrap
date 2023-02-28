@@ -2,6 +2,7 @@
 ChatWrap is a module to simplify the use of openai lib
 """
 import openai
+from io import TextIOWrapper
 from typing import Literal as literal
 __version__="0.0.1"
 def setKey(key:str)->None:
@@ -121,3 +122,52 @@ class Chat:
         :param str key: key to be set for openai
         """
         openai.api_key=key
+class Image:
+    def __init__(self,api_key:str) -> None:
+        """
+        Uses openai to create a prompt based image
+        """
+        openai.api_key=api_key
+    def requestImage(self,prompt:str,size:str="1024x1024")->str:
+        """
+        :param str prompt: prompt for image
+        :returns str: url to image
+        :raises openai.error.OpenAIError:
+        """
+        return openai.Image.create(prompt=prompt,n=1,size=size)['data'][0]['url']
+    def requestImageEdit(self,image:TextIOWrapper,mask:TextIOWrapper,prompt:str,size:str="1024x1024")->str:
+        """
+        Creates images based on prompts when given the mask and image and returns the url for them
+        :param TextIOWrapper image: original image
+        :param TextIOWrapper mask: mask for the image
+        :param str prompt: prompt to change the image
+        :param str size: size of the image. 
+        :raises openai.error.OpenAIError:
+        """
+        return openai.Image.create_edit(image=image,mask=mask,prompt=prompt,n=1,size=size)['data'][0]['url']
+    def createVariationImage(self,image:TextIOWrapper,size:str="1024x1024")->str:
+        """
+        Creates variations of an image given
+        :param TextIOWrapper image: original image
+        :param str size: size of the image
+        :raises openai.error.OpenAIError:
+        """
+        return openai.Image.create_variation(image=image,n=1,size=size)['data'][0]['url']
+    def createVariationFromMemory(self,image:bytes,size:str="1024x1024")->str:
+        """
+        Creates a variation image from memory usually found in io.BytesIO but must be converted to bytes with BytesIO.getvalue()
+        :param bytes image: image data
+        :param str size: size of the image
+        :raises openai.error.OpenAIError:
+        """
+        return openai.Image.create_variation(image=image,n=1,size=size)['data'][0]['url']
+def getEmbedding(self,prompt:str,engine:str="text-embedding-ada-002")->dict:
+    """
+    Gets embeddding using openai
+    :param str prompt: The prompt to be embedded
+    :param str engine: while ada-002 is suggested this can be changed
+    :raises openai.error.OpenAIError:
+    """
+    return openai.Embedding.create(model=engine,input=prompt)
+
+__all__=["setKey","Filter","Code","Chat","Image"]

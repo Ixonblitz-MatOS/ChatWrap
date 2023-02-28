@@ -1,2 +1,4 @@
 # ChatWrap
 ChatGPT Wrapper
+Syntax:
+    

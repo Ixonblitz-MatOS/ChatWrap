@@ -1,17 +1,26 @@
 """
 ChatWrap is a module to simplify the use of openai lib
 """
+__all__=["setKey","Filter","Code","Chat","Image"]
+__version__="0.0.1"
 import openai
 from io import TextIOWrapper
 from typing import Literal as literal
-__version__="0.0.1"
 def setKey(key:str)->None:
     """
     Set the key for openai use
     :param str key: key to be set for openai
     """
     openai.api_key=key
-class Filter:
+class base:
+    def __init__(self) -> None:pass
+    def setKey(self,key:str)->None:
+        """
+        Set the key for openai use
+        :param str key: key to be set for openai
+        """
+        openai.api_key=key
+class Filter(base):
     """
     Class for simplified openai filtering using the content filter ai
     """
@@ -47,13 +56,7 @@ class Filter:
         if output_label not in ["0", "1", "2"]:output_label = "2"
         possibilities={"0":"Safe","1":"Possibly unsafe","2":"Unsafe"}
         return (int(output_label),possibilities[output_label])
-    def setKey(self,key:str)->None:
-        """
-        Set the key for openai use
-        :param str key: key to be set for openai
-        """
-        openai.api_key=key
-class Code:
+class Code(base):
     """
     Class for simplified openai code completion and help using code completion ai
     """
@@ -80,13 +83,7 @@ class Code:
         :raises openai.error.RateLimitError: if you used the quota too much, check your account plan
         """
         return openai.Completion.create(engine=self.model, prompt=prompt, max_tokens=4000).choices[0].text
-    def setKey(self,key:str)->None:
-        """
-        Set the key for openai use
-        :param str key: key to be set for openai
-        """
-        openai.api_key=key
-class Chat:
+class Chat(base):
     """
     Class for simplified openai chatting using text response ai
     """
@@ -116,13 +113,7 @@ class Chat:
         :raises openai.error.RateLimitError: if you used the quota too much, check your account plan
         """
         return openai.Completion.create(engine=self.model, prompt=prompt, max_tokens=4000).choices[0].text
-    def setKey(self,key:str)->None:
-        """
-        Set the key for openai use
-        :param str key: key to be set for openai
-        """
-        openai.api_key=key
-class Image:
+class Image(base):
     def __init__(self,api_key:str) -> None:
         """
         Uses openai to create a prompt based image
@@ -130,7 +121,7 @@ class Image:
         openai.api_key=api_key
     def requestImage(self,prompt:str,size:str="1024x1024")->str:
         """
-        :param str prompt: prompt for image
+        :param str prompt: prompt for image 
         :returns str: url to image
         :raises openai.error.OpenAIError:
         """
@@ -138,9 +129,9 @@ class Image:
     def requestImageEdit(self,image:TextIOWrapper,mask:TextIOWrapper,prompt:str,size:str="1024x1024")->str:
         """
         Creates images based on prompts when given the mask and image and returns the url for them
-        :param TextIOWrapper image: original image
-        :param TextIOWrapper mask: mask for the image
-        :param str prompt: prompt to change the image
+        :param TextIOWrapper image: original image using rb mode
+        :param TextIOWrapper mask: mask for the image using rb mode
+        :param str prompt: prompt to change the image 
         :param str size: size of the image. 
         :raises openai.error.OpenAIError:
         """
@@ -148,7 +139,7 @@ class Image:
     def createVariationImage(self,image:TextIOWrapper,size:str="1024x1024")->str:
         """
         Creates variations of an image given
-        :param TextIOWrapper image: original image
+        :param TextIOWrapper image: original image using rb mode
         :param str size: size of the image
         :raises openai.error.OpenAIError:
         """
@@ -169,5 +160,3 @@ def getEmbedding(prompt:str,engine:str="text-embedding-ada-002")->dict:
     :raises openai.error.OpenAIError:
     """
     return openai.Embedding.create(model=engine,input=prompt)
-
-__all__=["setKey","Filter","Code","Chat","Image"]

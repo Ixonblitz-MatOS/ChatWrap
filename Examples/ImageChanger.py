@@ -19,8 +19,10 @@ class style:
 
 api_key="ENTER API KEY HERE"
 editor=chatwrap.Image(api_key=api_key)
-def handle(p):
-    editor.createVariationImage(open(p,'rb'))
+def handle(p,sizing):
+    editor.createVariationImage(open(p,'rb'),sizing)
+
 while True:
     path=input("Enter the path of the image to variate: ")
-    handle(path)
+    si=input("Enter the size of the image: ")
+    handle(path,si)

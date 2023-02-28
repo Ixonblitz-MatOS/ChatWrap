@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools==60.2.0","wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ChatWrap"
+description='ChatWrap is a module to simplify the use of openai lib'
+readme = "readme.md"
+license = { file = "LICNSE" }
+version = "0.0.1"
+dependencies= [
+    'astor; python_version < "3.9"',
+    'openai',
+    'ultraimport'
+]
+requires-python = '>=3.10'
+
+[[authors]]
+name = "Ixonblitz-MatOS"
+email = "gavellmathew@gmail.com"
+
+[project.urls]
+main = "https://github.com/Ixonblitz-MatOS/ChatWrap"
+
+[tool.setuptools]
+include-package-data = false
+packages = ["ChatWrap"]
+[tool.setuptools.package-dir]
+ChatWrap = "."
+

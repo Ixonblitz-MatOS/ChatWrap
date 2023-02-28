@@ -16,7 +16,7 @@ class Code:
     """
     davinci_code_engine="code-davinci-002"
     cushman_code_engine="code-cushman-001"
-    
+    def __init__(self,api_key:str="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",model_engine:str|literal["code-davinci-002"]|literal["code-cushman-001"]="code-davinci-002")
 class Chat:
     """
     Class for simplified openai chatting using text response ai
@@ -30,8 +30,8 @@ class Chat:
         """
         Initial configuration for ai communication
 
-        :param str api_key:
-        :param str model_engine:
+        :param str api_key: openai key
+        :param str model_engine: engine type found in this class
         :raises TypeError: if not isinstance(api_key,str)|is not a literal of one of the supported engines found
         :raises openai.error.AuthenticationError: if no api_key is given
         :raises openai.error.InvalidRequestError: if model does not exist.
